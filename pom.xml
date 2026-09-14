@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <!--
+    Standalone client for the TGA ARTG register feed.
+
+    Kept outside the Lingo reactor deliberately. Nothing in that reactor reads the register — its
+    consumers are the submission gateway and the feed processor — so hosting this there would tie
+    register-integration releases to an application that never uses it, and force consumers to take
+    a whole Lingo version bump to pick up a register fix. Versioned independently for the same
+    reason the Snowstorm client is: it tracks an external system's contract, on that system's
+    schedule.
+  -->
+  <artifactId>tga-feed-client</artifactId>
+  <description>Client and shared domain rules for the TGA ARTG register feed</description>
+  <groupId>au.gov.digitalhealth</groupId>
+  <name>tga-feed-client</name>
+  <version>1.0.0-SNAPSHOT</version>
+
+  <parent>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <groupId>org.springframework.boot</groupId>
+    <relativePath/>
+    <version>4.1.0</version>
+  </parent>
+
+  <properties>
+    <java.version>21</java.version>
+    <jsoup.version>1.15.3</jsoup.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webflux</artifactId>
+    </dependency>
+    <!-- WebClient's reactor-netty connector resolves SmartLifecycle at construction time. -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor.netty</groupId>
+      <artifactId>reactor-netty-http</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+    <!-- Builds the register description table. Pinned to the version the feed processor used, so
+         the markup stays byte-identical to descriptions already written on tickets. -->
+    <dependency>
+      <groupId>org.jsoup</groupId>
+      <artifactId>jsoup</artifactId>
+      <version>${jsoup.version}</version>
+    </dependency>
+    <!-- Optional: lets a Spring Boot application get the clients from tga.feed.* properties with no
+         configuration class of its own. Optional so the library stays usable outside Spring Boot -
+         the clients are plain constructors and need none of this. -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-autoconfigure</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- ApplicationContextRunner, to prove the auto-configuration binds what it claims to. -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <annotationProcessorPaths>
+            <path>
+              <artifactId>lombok</artifactId>
+              <groupId>org.projectlombok</groupId>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
