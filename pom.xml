@@ -51,6 +51,24 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
+  <!--
+    Dependencies are resolved from the shared feed as well as Maven Central, matching how the other
+    artefacts in this group are consumed. Without this a clean agent cannot resolve anything that
+    lives only on the feed.
+  -->
+  <repositories>
+    <repository>
+      <id>${deployment.repo.id}</id>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <url>${deployment.repo.url}</url>
+    </repository>
+  </repositories>
+
   <dependencies>
     <dependency>
       <groupId>org.springframework</groupId>

@@ -1,0 +1,85 @@
+# Builds and publishes tga-feed-client to the shared Maven feed.
+#
+# Modelled on snowstorm-java-client's pipeline, which publishes the same way for the same reason:
+# this library tracks an external system's contract on that system's schedule, so it is versioned
+# and released independently of any application that consumes it.
+#
+# Publishing happens here rather than from a developer machine. MavenAuthenticate injects the feed
+# credentials into the agent, so no personal access token is involved and nobody needs write scope
+# on the feed to release.
+
+trigger:
+  branches:
+    include:
+      - main
+  tags:
+    include:
+      - '*'
+
+# Build pull requests, but do not publish from them — see the deploy step's condition.
+pr:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
+  MAVEN_OPTS: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+  # Only a build of the branch itself publishes. A pull request build compiles and tests, so a
+  # broken change is caught, but must not overwrite the snapshot everyone else resolves.
+  isPublishable: $[ or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/tags/')) ]
+
+steps:
+  - task: JavaToolInstaller@0
+    displayName: 'Use Java 21'
+    inputs:
+      versionSpec: '21'
+      jdkArchitectureOption: 'x64'
+      jdkSourceOption: 'PreInstalled'
+
+  - task: MavenAuthenticate@0
+    displayName: 'Authenticate to the snomio feed'
+    inputs:
+      artifactsFeeds: 'snomio'
+
+  - task: Cache@2
+    displayName: 'Cache the Maven local repository'
+    inputs:
+      key: 'maven | "$(Agent.OS)" | **/pom.xml'
+      restoreKeys: |
+        maven | "$(Agent.OS)"
+        maven
+      path: $(MAVEN_CACHE_FOLDER)
+
+  # Verify on every build, including pull requests. The register-domain rules here are relied on by
+  # more than one service, so a regression must not reach the feed to be discovered downstream.
+  - task: Maven@3
+    displayName: 'Build and test'
+    inputs:
+      mavenPomFile: 'pom.xml'
+      options: '--no-transfer-progress'
+      mavenOptions: '-Xmx2048m $(MAVEN_OPTS)'
+      javaHomeOption: 'path'
+      jdkUserInputPath: '$(JAVA_HOME_21_X64)'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: true
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      goals: 'verify'
+
+  - task: Maven@3
+    displayName: 'Publish to the snomio feed'
+    condition: and(succeeded(), eq(variables.isPublishable, true))
+    inputs:
+      mavenPomFile: 'pom.xml'
+      # Already built and tested by the step above; re-running them here would only add time and a
+      # second chance to be flaky.
+      options: '--no-transfer-progress -DskipTests'
+      mavenOptions: '-Xmx2048m $(MAVEN_OPTS)'
+      javaHomeOption: 'path'
+      jdkUserInputPath: '$(JAVA_HOME_21_X64)'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+      goals: 'deploy'
