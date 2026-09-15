@@ -26,7 +26,26 @@
     <version>4.1.0</version>
   </parent>
 
+  <!--
+    Published to the same internal feed as the other shared artefacts, so consuming services resolve
+    it there rather than from a developer's local repository.
+  -->
+  <distributionManagement>
+    <repository>
+      <id>${deployment.repo.id}</id>
+      <name>Maven Release Feed</name>
+      <url>${deployment.repo.url}</url>
+    </repository>
+    <snapshotRepository>
+      <id>${deployment.repo.id}</id>
+      <name>Maven Snapshot Release Feed</name>
+      <url>${deployment.repo.url}</url>
+    </snapshotRepository>
+  </distributionManagement>
+
   <properties>
+    <deployment.repo.id>snomio</deployment.repo.id>
+    <deployment.repo.url>https://pkgs.dev.azure.com/OD225632-NCTS-ContentAndTooling/Snomio/_packaging/snomio/maven/v1</deployment.repo.url>
     <java.version>21</java.version>
     <jsoup.version>1.15.3</jsoup.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
