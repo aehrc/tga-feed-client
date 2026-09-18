@@ -115,4 +115,43 @@ class RegisterEntryParsingTest {
     assertThat(result.getResults()).hasSize(1);
     assertThat(result.getResults().get(0).getLicenceId()).isEqualTo("123456");
   }
+
+  /**
+   * Verbatim from the register: a {@code Medical Device Included} entry whose DeviceProductNames are
+   * objects. Modelling them as strings parsed every medicine page and then failed on the first
+   * device entry carrying one — about two per thousand, so a whole scan reached page 3000 before
+   * anything went wrong. Nothing here reads these names; the entry only has to parse, because one
+   * unparseable entry fails the page it sits in and, with it, the rest of the scan.
+   */
+  @Test
+  void parsesADeviceEntryWhoseProductNamesAreObjects() throws Exception {
+    String deviceEntry =
+        """
+        {
+          "LicenceId": "104526",
+          "Name": "Johnson & Johnson Medical - spinal implant",
+          "EntryType": "Medical Device Included",
+          "Status": "Active",
+          "DeviceProductNames": [
+            { "Name": "Anterior ISOLA Spine System single hole washer" },
+            { "Name": "CrossOver large cross connector" }
+          ]
+        }
+        """;
+
+    RegisterEntry entry = mapper.readValue(deviceEntry, RegisterEntry.class);
+
+    assertThat(entry.getDeviceProductNames()).hasSize(2);
+    assertThat(entry.getDeviceProductNames().get(0).getName())
+        .isEqualTo("Anterior ISOLA Spine System single hole washer");
+  }
+
+  /** The shape the other 998 entries in a page carry. */
+  @Test
+  void parsesAnEntryWithNoDeviceProductNames() throws Exception {
+    RegisterEntry entry =
+        mapper.readValue("{\"LicenceId\":\"1\",\"DeviceProductNames\":[]}", RegisterEntry.class);
+
+    assertThat(entry.getDeviceProductNames()).isEmpty();
+  }
 }

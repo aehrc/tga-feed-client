@@ -64,8 +64,11 @@ public class RegisterEntry {
   @JsonProperty("Manufacturers")
   private List<RegisterManufacturer> manufacturers;
 
+  // Objects, not strings: the register returns [{"Name": "..."}] here. Declaring this List<String>
+  // parsed every medicine page cleanly and then failed on the first device entry that actually had
+  // one — roughly two entries per thousand, so it survived well past page 3000 before surfacing.
   @JsonProperty("DeviceProductNames")
-  private List<String> deviceProductNames;
+  private List<RegisterDeviceProductName> deviceProductNames;
 
   @JsonProperty("AnnualChargeExemptWaverFlag")
   private String annualChargeExemptWaverFlag;
