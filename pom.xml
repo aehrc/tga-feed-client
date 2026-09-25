@@ -17,7 +17,7 @@
   <description>Client and shared domain rules for the TGA ARTG register feed</description>
   <groupId>au.gov.digitalhealth</groupId>
   <name>tga-feed-client</name>
-  <version>1.0.0</version>
+  <version>1.0.1-SNAPSHOT</version>
 
   <parent>
     <artifactId>spring-boot-starter-parent</artifactId>
