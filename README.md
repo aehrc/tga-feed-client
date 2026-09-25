@@ -30,7 +30,7 @@ This library is the one place that knows how to read the register.
 <dependency>
   <groupId>au.gov.digitalhealth</groupId>
   <artifactId>tga-feed-client</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 
