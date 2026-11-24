@@ -1,0 +1,93 @@
+{
+  "name": "Sodibic Capsules bottle",
+  "status": "Active",
+  "products": [
+    {
+      "Name": "Sodibic Capsules bottle",
+      "Type": "Single Medicine Product",
+      "Packs": [
+        {
+          "Size": "100",
+          "PoisonSchedule": "Not scheduled. Not considered by committee"
+        },
+        {
+          "Size": "500",
+          "PoisonSchedule": "Not scheduled. Not considered by committee"
+        },
+        {
+          "Size": "bulk",
+          "PoisonSchedule": "Not scheduled. Not considered by committee"
+        }
+      ],
+      "GMDNCode": "",
+      "GMDNTerm": "",
+      "Warnings": [],
+      "Components": [
+        {
+          "DosageForm": "Capsule, hard",
+          "VisualIdentification": "Opaque, ivory capsule containing white powder",
+          "RouteOfAdministration": "Oral"
+        }
+      ],
+      "Containers": [
+        {
+          "Type": "Bottle",
+          "Closure": "",
+          "LifeTime": "0 ",
+          "Material": null,
+          "Conditions": [
+            ""
+          ],
+          "Temperature": ""
+        },
+        {
+          "Type": "Bottle",
+          "Closure": "",
+          "LifeTime": "3 Years",
+          "Material": null,
+          "Conditions": [
+            "Protect from Light"
+          ],
+          "Temperature": "Store below 30 degrees Celsius"
+        }
+      ],
+      "Ingredients": [
+        {
+          "Name": "magnesium stearate ",
+          "Strength": "",
+          "EquivDetail": "",
+          "FormulationType": "Excipient"
+        },
+        {
+          "Name": "sodium bicarbonate ",
+          "Strength": "840.0000 mg",
+          "EquivDetail": "",
+          "FormulationType": "Active"
+        },
+        {
+          "Name": "ethylcellulose ",
+          "Strength": "",
+          "EquivDetail": "",
+          "FormulationType": "Excipient"
+        }
+      ],
+      "EffectiveDate": "2024-01-31",
+      "SpecificIndications": [
+        "Renal failure associated with renal tubular acidosis in which bicarbonate replacement becomes necessary."
+      ],
+      "StandardIndications": [],
+      "AdditionalInformation": []
+    }
+  ],
+  "entryType": "Medicine Registered",
+  "licenceId": "27977",
+  "startDate": "1991-10-21",
+  "summaryUrl": "https://www.ebs.tga.gov.au/servlet/xmlmillr6?dbid=ebs/PublicHTML/pdfStore.nsf&docid=27977&agid=(PrintDetailsPublic)&actionid=1",
+  "productInformation": {
+    "DocumentLink": ""
+  },
+  "consumerInformation": {
+    "DocumentLink": ""
+  },
+  "blackTriangleSchemeFlag": ""
+}
