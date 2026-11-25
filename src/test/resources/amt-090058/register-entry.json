@@ -1,0 +1,123 @@
+{
+  "RequestedPageEnd": 20,
+  "RequestedPageStart": 1,
+  "Results": [
+    {
+      "AnnualChargeExemptWaverDate": null,
+      "AnnualChargeExemptWaverFlag": "",
+      "ApprovalArea": "Non-Prescription Medicines",
+      "BlackTriangleSchemeFlag": "",
+      "Conditions": [
+        "Conditions applicable to all therapeutic goods as specified in the document \"Standard Conditions Applying to Registered or Listed Therapeutic Goods Under Section 28 of the Therapeutic Goods Act 1989\" effective 1 July 1995.",
+        "Conditions applicable to the relevant category and class of therapeutic goods as specified in the document \"Standard Conditions Applying to Registered or Listed Therapeutic Goods Under Section 28 of the Therapeutic Goods Act 1989\" effective 1 July 1995."
+      ],
+      "ConsumerInformation": {
+        "DocumentLink": ""
+      },
+      "DeviceProductNames": [],
+      "EntryType": "Medicine Registered",
+      "LicenceClass": "",
+      "LicenceId": "27977",
+      "Manufacturers": [],
+      "Name": "Sodibic Capsules bottle",
+      "NilTurnoverDate": null,
+      "NilTurnoverFlag": "",
+      "ProductCategory": "Medicine",
+      "ProductInformation": {
+        "DocumentLink": ""
+      },
+      "Products": [
+        {
+          "AdditionalInformation": [],
+          "Components": [
+            {
+              "DosageForm": "Capsule, hard",
+              "RouteOfAdministration": "Oral",
+              "VisualIdentification": "Opaque, ivory capsule containing white powder"
+            }
+          ],
+          "Containers": [
+            {
+              "Closure": "",
+              "Conditions": [
+                ""
+              ],
+              "LifeTime": "0 ",
+              "Material": null,
+              "Temperature": "",
+              "Type": "Bottle"
+            },
+            {
+              "Closure": "",
+              "Conditions": [
+                "Protect from Light"
+              ],
+              "LifeTime": "3 Years",
+              "Material": null,
+              "Temperature": "Store below 30 degrees Celsius",
+              "Type": "Bottle"
+            }
+          ],
+          "EffectiveDate": "2024-01-31",
+          "GMDNCode": "",
+          "GMDNTerm": "",
+          "Ingredients": [
+            {
+              "EquivDetail": "",
+              "FormulationType": "Excipient",
+              "Name": "magnesium stearate ",
+              "Strength": ""
+            },
+            {
+              "EquivDetail": "",
+              "FormulationType": "Active",
+              "Name": "sodium bicarbonate ",
+              "Strength": "840.0000 mg"
+            },
+            {
+              "EquivDetail": "",
+              "FormulationType": "Excipient",
+              "Name": "ethylcellulose ",
+              "Strength": ""
+            }
+          ],
+          "Name": "Sodibic Capsules bottle",
+          "Packs": [
+            {
+              "PoisonSchedule": "Not scheduled. Not considered by committee",
+              "Size": "100"
+            },
+            {
+              "PoisonSchedule": "Not scheduled. Not considered by committee",
+              "Size": "500"
+            },
+            {
+              "PoisonSchedule": "Not scheduled. Not considered by committee",
+              "Size": "bulk"
+            }
+          ],
+          "SpecificIndications": [
+            "Renal failure associated with renal tubular acidosis in which bicarbonate replacement becomes necessary."
+          ],
+          "StandardIndications": [],
+          "Type": "Single Medicine Product",
+          "Warnings": []
+        }
+      ],
+      "Sponsor": {
+        "Address": {
+          "AddressLine1": "34-36 Chandos Street",
+          "AddressLine2": "",
+          "Country": "Australia",
+          "Postcode": "2065",
+          "State": "NSW",
+          "Suburb": "ST LEONARDS"
+        },
+        "Name": "Aspen Pharmacare Australia Pty Ltd"
+      },
+      "StartDate": "1991-10-21",
+      "Status": "Active"
+    }
+  ],
+  "TotalRecords": 1
+}

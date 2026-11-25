@@ -22,7 +22,9 @@ import java.util.Set;
  *   <li><b>{@code EffectiveDate} churn.</b> The register revises this field on entries whose
  *       content is otherwise identical, so it cannot be treated as evidence of change.
  *   <li><b>Unstable collection order.</b> Components, containers, ingredients and packs come back
- *       in different orders for the same product.
+ *       in different orders for the same product. Field order inside an object is not stable
+ *       either, because it depends on where the JSON was read from, so fields are put in key order
+ *       before arrays are sorted.
  *   <li><b>Blank filler.</b> Entries carry empty strings, whitespace, and objects whose every field
  *       is blank, appearing and disappearing between reads.
  * </ul>
@@ -78,9 +80,22 @@ public final class RegisterSnapshotNormaliser {
     return node;
   }
 
+  /**
+   * Rebuilds an object with its fields in key order.
+   *
+   * <p>Key order matters because arrays are sorted by each element's serialised form, and that form
+   * lists fields in the order the object holds them. The two sides of a comparison hold them in
+   * different orders: a stored snapshot read back from Postgres {@code jsonb} comes out shortest key
+   * first ({@code Type, Closure, LifeTime, …}), while a fresh entry serialised from the model comes
+   * out in field-declaration order ({@code Type, Closure, Conditions, …}). Without a canonical key
+   * order, the same elements sort differently on each side, the arrays compare unequal, and an
+   * unchanged entry is reported as changed on every run.
+   */
   private static JsonNode normaliseObject(JsonNode node) {
     ObjectNode result = JsonNodeFactory.instance.objectNode();
-    Iterator<Map.Entry<String, JsonNode>> fields = node.properties().iterator();
+    List<Map.Entry<String, JsonNode>> sortedFields = new ArrayList<>(node.properties());
+    sortedFields.sort(Map.Entry.comparingByKey());
+    Iterator<Map.Entry<String, JsonNode>> fields = sortedFields.iterator();
     while (fields.hasNext()) {
       Map.Entry<String, JsonNode> field = fields.next();
       if (VOLATILE_FIELDS.contains(field.getKey().toLowerCase())) {

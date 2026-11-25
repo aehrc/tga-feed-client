@@ -78,6 +78,33 @@ class RegisterSnapshotNormaliserTest {
   }
 
   @Test
+  void fieldOrderInsideArrayElementsDoesNotAffectTheComparison() {
+    // Stored snapshots come back from Postgres jsonb with keys shortest first; fresh entries come
+    // out in model field order. Sorting arrays by serialised form must not depend on that.
+    // Taken from AMT-090058, which was reopened on every run because of this.
+    assertThat(
+            changed(
+                "{\"products\":[{\"Containers\":["
+                    + "{\"Type\":\"Bottle\",\"LifeTime\":\"0 \"},"
+                    + "{\"Type\":\"Bottle\",\"LifeTime\":\"3 Years\",\"Conditions\":[\"Protect from Light\"]}"
+                    + "]}]}",
+                "{\"products\":[{\"Containers\":["
+                    + "{\"Type\":\"Bottle\",\"Conditions\":[\"Protect from Light\"],\"LifeTime\":\"3 Years\"},"
+                    + "{\"Type\":\"Bottle\",\"LifeTime\":\"0 \"}"
+                    + "]}]}"))
+        .isFalse();
+  }
+
+  @Test
+  void aChangedValueIsStillDetectedWhenFieldOrderDiffers() {
+    assertThat(
+            changed(
+                "{\"products\":[{\"Containers\":[{\"Type\":\"Bottle\",\"LifeTime\":\"3 Years\"}]}]}",
+                "{\"products\":[{\"Containers\":[{\"LifeTime\":\"2 Years\",\"Type\":\"Bottle\"}]}]}"))
+        .isTrue();
+  }
+
+  @Test
   void aRemovedIngredientIsAChangeEvenThoughOrderIsIgnored() {
     assertThat(
             changed(
